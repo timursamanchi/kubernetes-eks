@@ -6,4 +6,5 @@
 #   - eksNodeGroupRole       → For EC2 node groups to join the cluster
 # ------------------------------------------------------------------------------
 # NOTE: IRSA roles for app-specific access (e.g. DynamoDB, S3) will be added later.
+# PLACE HOLDER
 ################################################################################
