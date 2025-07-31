@@ -30,3 +30,30 @@ variable "allowed_ingress_cidr" {
   type        = list(string)
   default     = ["0.0.0.0/0"] # restrict in production!
 }
+
+# variable "eks_admin_access_entries" {
+#   description = "List of IAM users to grant admin access via aws-auth ConfigMap"
+#   type = list(object({
+#     userarn  = string
+#     username = string
+#     groups   = list(string)
+#   }))
+
+#   default = []
+# }
+variable "eks_admin_access_entries" {
+  description = "Map of IAM access entries for EKS aws-auth"
+  type = map(object({
+    principal_arn        = string
+    kubernetes_username  = string
+    kubernetes_groups    = list(string)
+    policy_associations  = optional(list(object({
+      policy_arn = string
+      access_scope = object({
+        type       = string
+        namespaces = optional(list(string))
+      })
+    })), [])
+  }))
+  default = {}
+}
