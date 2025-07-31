@@ -25,7 +25,7 @@ module "eks" {
 
   eks_managed_node_groups = {
     quoteapp_nodes = {
-      ami_id         = "ami-01f23391a59163da9"  # Replace with your custom Ubuntu AMI ID
+      ami_type = "AL2_x86_64" # ✅ Amazon Linux 2, EKS-optimized — works out-of-the-box.
       instance_types = ["t3.small"]
       disk_size      = 30
       min_size       = 1
