@@ -10,5 +10,12 @@ spec:
       image: busybox
       command: ["sleep", "3600"]
       imagePullPolicy: IfNotPresent
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "16Mi"
+        limits:
+          cpu: "50m"
+          memory: "32Mi"
   restartPolicy: Never
 
