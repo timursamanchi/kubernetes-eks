@@ -1,3 +1,15 @@
+################################################################################
+# EKS SECURITY GROUP
+# ------------------------------------------------------------------------------
+# Creates a security group for the EKS cluster with:
+#   - Ingress from allowed CIDRs (SSH, HTTP, HTTPS — via local.all_ingress_cidr_rules)
+#   - Ingress from itself on port 8080 (for inter-pod/backend traffic)
+#   - All egress allowed by default
+#
+# Note:
+#   🔐 Use tighter CIDRs in production for ingress rules.
+################################################################################
+
 module "eks_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "~> 5.1"
