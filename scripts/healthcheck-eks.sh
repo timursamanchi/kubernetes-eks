@@ -3,8 +3,9 @@
 CLUSTER_NAME="quote-app-eks"
 REGION="eu-west-2"
 NAMESPACE="quoteapp"
-
+echo ""
 echo "🚦 Running EKS Cluster Healthcheck..."
+echo ""
 
 # Update kubeconfig
 echo "🔧 Updating kubeconfig..."
