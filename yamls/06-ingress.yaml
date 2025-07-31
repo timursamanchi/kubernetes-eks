@@ -1,0 +1,23 @@
+# 06-ingress.yaml
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: quote-ingress
+  namespace: quote-app
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: quote.local     # You can use your custom domain or leave this out for bare IP access
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: quote-frontend
+                port:
+                  number: 80
+---

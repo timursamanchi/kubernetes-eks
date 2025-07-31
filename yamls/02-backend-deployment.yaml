@@ -1,0 +1,25 @@
+# 02-backend-deployment.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quote-backend
+  namespace: quote-app
+  labels:
+    app: quote-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quote-backend
+  template:
+    metadata:
+      labels:
+        app: quote-backend
+    spec:
+      containers:
+        - name: backend
+          image: timursamanchi/quote-docker-app-backend
+          ports:
+            - containerPort: 8080
+---
