@@ -1,0 +1,14 @@
+# busybox-test.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+  namespace: quote-app
+spec:
+  containers:
+    - name: busybox
+      image: busybox
+      command: ["sleep", "3600"]
+      imagePullPolicy: IfNotPresent
+  restartPolicy: Never
+
