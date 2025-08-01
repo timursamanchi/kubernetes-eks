@@ -5,13 +5,10 @@ kind: Ingress
 metadata:
   name: quote-ingress
   namespace: quote-app
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+  annotations: {}  # <== No rewrite-target
 spec:
-  ingressClassName: nginx
   rules:
-    - host: quote.local     # You can use your custom domain or leave this out for bare IP access
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix
@@ -20,4 +17,13 @@ spec:
                 name: quote-frontend
                 port:
                   number: 80
+          - path: /quote
+            pathType: Prefix
+            backend:
+              service:
+                name: quote-backend
+                port:
+                  number: 8080
+
+
 ---

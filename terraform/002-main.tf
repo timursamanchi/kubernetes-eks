@@ -26,6 +26,27 @@ locals {
 }
 
 #######################################
+# Install nginx ingress yaml and a k8s loadbalancer
+#######################################
+resource "null_resource" "install_nginx_ingress" {
+  depends_on = [module.eks] # Ensures cluster is ready before this runs
+
+  provisioner "local-exec" {
+    command = <<EOT
+    echo "Installing ingress-nginx controller..."
+    aws eks update-kubeconfig --name ${module.eks.cluster_name} --region ${var.aws_region}
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.9.5/deploy/static/provider/aws/deploy.yaml
+    EOT
+  }
+
+  triggers = {
+    cluster_name = module.eks.cluster_name
+    # change this manually to force re-run if needed
+    install_version = "v1.9.5"
+  }
+}
+
+#######################################
 # CloudWatch Log Groups
 #######################################
 resource "aws_cloudwatch_log_group" "quote_frontend" {
