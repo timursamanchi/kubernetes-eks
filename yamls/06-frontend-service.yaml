@@ -1,5 +1,4 @@
-# 05-frontend-service.yaml
----
+# 06-frontend-service.yaml
 apiVersion: v1
 kind: Service
 metadata: 
@@ -15,5 +14,3 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-      nodePort: 30080  # Optional, can be any value in 30000–32767
----

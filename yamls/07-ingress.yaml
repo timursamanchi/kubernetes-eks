@@ -1,12 +1,12 @@
-# 06-ingress.yaml
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: quote-ingress
   namespace: quote-app
-  annotations: {}  # <== No rewrite-target
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
     - http:
         paths:
@@ -24,6 +24,3 @@ spec:
                 name: quote-backend
                 port:
                   number: 8080
-
-
----

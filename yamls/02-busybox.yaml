@@ -1,4 +1,4 @@
-# busybox-test.yaml
+# 02-busybox.yaml
 apiVersion: v1
 kind: Pod
 metadata:
