@@ -23,6 +23,13 @@ curl http://localhost:80/quote	NGINX Ingress → quote-backend
 curl http://localhost:8080/quote	Direct → quote-backend
 ```
 
+## create a tunnel (recommended) or do a port-forward
+For Minikube tunnel
+```
+alias mk-tunnel-start="nohup sudo minikube tunnel > /dev/null 2>&1 & echo \$! > minikube.tunnel.pid"
+alias mk-tunnel-stop="sudo kill \$(cat minikube.tunnel.pid) && rm minikube.tunnel.pid"
+```
+For Port-Forward
 ### 🔹 1. Port-forward the backend directly to 8080 (API access)- backend:
 ```
 kubectl port-forward -n quote-app svc/quote-backend 8080:8080
@@ -47,4 +54,17 @@ alias pf-frontend-stop="sudo kill \$(cat frontend.portforward.pid) && rm fronten
 
 # run pf-frontend-start and then alias pf-frontend-stop
 ```
-ls of -i :80
+
+### to check if ingresss-nginx is running as loadbalancer
+```
+kubectl get svc -n ingress-nginx
+
+# or more details
+kubectl get svc ingress-nginx-controller -n ingress-nginx -o wide
+
+```
+
+### rollout a new container definition
+```
+kubectl rollout restart deployment quote-frontend -n quote-app
+```
