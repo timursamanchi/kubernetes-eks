@@ -28,6 +28,9 @@ For Minikube tunnel
 ```
 alias mk-tunnel-start="nohup sudo minikube tunnel > /dev/null 2>&1 & echo \$! > minikube.tunnel.pid"
 alias mk-tunnel-stop="sudo kill \$(cat minikube.tunnel.pid) && rm minikube.tunnel.pid"
+
+alias mk-kill-all='ps aux | grep -E "minikube tunnel|kubectl port-forward|ssh -o UserKnownHostsFile" | grep -v grep | awk "{print \$2}" | xargs sudo kill -9'
+
 ```
 For Port-Forward
 ### 🔹 1. Port-forward the backend directly to 8080 (API access)- backend:

@@ -1,16 +1,36 @@
-FROM ruby:3.2-alpine
+FROM ruby:3.1-bullseye AS builder
 
-# Install deps
-RUN apk add --no-cache build-base nginx \
-  && gem install jekyll bundler jekyll-theme-cayman
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    nodejs \
+    yarn \
+    git \
+    nginx \
+    && gem install bundler
 
-# Set up site
-WORKDIR /srv/jekyll
-COPY . /srv/jekyll
+WORKDIR /site
 
-# Nginx config
+# Write Gemfile with all dependencies
+RUN echo "source 'https://rubygems.org'" > Gemfile && \
+    echo "gem 'jekyll'" >> Gemfile && \
+    echo "gem 'jekyll-theme-cayman'" >> Gemfile && \
+    echo "gem 'rake'" >> Gemfile
+
+# Install all gems
+RUN bundle install
+
+# Copy your site files (index.md, _config.yml, etc.)
+COPY . .
+
+# Build the site
+RUN bundle exec jekyll build -d /site/_site
+
+# --- Final stage with nginx ---
+FROM nginx:stable-alpine
+
+# Copy built static site
+COPY --from=builder /site/_site /usr/share/nginx/html
+
+# Custom nginx config
 COPY default.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-
-CMD sh -c "jekyll serve --watch --host 0.0.0.0 --port 4000 & nginx -g 'daemon off;'"
