@@ -15,3 +15,36 @@ kubectl config current-context
 
 ```
 
+## ✅ Final Routing Map
+Request	Goes To
+```
+curl http://localhost:80	NGINX Ingress → quote-frontend
+curl http://localhost:80/quote	NGINX Ingress → quote-backend
+curl http://localhost:8080/quote	Direct → quote-backend
+```
+
+### 🔹 1. Port-forward the backend directly to 8080 (API access)- backend:
+```
+kubectl port-forward -n quote-app svc/quote-backend 8080:8080
+```
+
+### 🔹 2. Port-forward Ingress separately to 80 (frontend) - sudo reqiured for port 80:
+
+```
+sudo kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 80:80
+```
+
+### tip: for detached mode -d
+```
+alias pf-backend-start="kubectl port-forward -n quote-app svc/quote-backend 8080:8080 > /dev/null 2>&1 & echo \$! > backend.portforward.pid"
+alias pf-backend-stop="kill \$(cat backend.portforward.pid) && rm backend.portforward.pid"
+
+# run pf-backend-start and then alias pf-backend-stop
+
+
+alias pf-frontend-start="nohup sudo kubectl port-forward -n quote-app svc/quote-frontend 80:80 > /dev/null 2>&1 & echo \$! > frontend.portforward.pid"
+alias pf-frontend-stop="sudo kill \$(cat frontend.portforward.pid) && rm frontend.portforward.pid"
+
+# run pf-frontend-start and then alias pf-frontend-stop
+```
+ls of -i :80
